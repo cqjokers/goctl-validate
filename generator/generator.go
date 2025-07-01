@@ -10,27 +10,27 @@ import (
 	"github.com/zeromicro/go-zero/tools/goctl/plugin"
 )
 
-// SimpleValidateGenerator 简化的验证代码生成器
-type SimpleValidateGenerator struct {
+// ValidateGenerator 简化的验证代码生成器
+type ValidateGenerator struct {
 	plugin  *plugin.Plugin
 	options *Options
 }
 
-// NewSimpleValidateGenerator 创建简化的验证代码生成器
-func NewSimpleValidateGenerator(p *plugin.Plugin, opts *Options) *SimpleValidateGenerator {
+// NewValidateGenerator 创建简化的验证代码生成器
+func NewValidateGenerator(p *plugin.Plugin, opts *Options) *ValidateGenerator {
 	if opts == nil {
 		opts = &Options{
 			EnableTranslator: false,
 		}
 	}
-	return &SimpleValidateGenerator{
+	return &ValidateGenerator{
 		plugin:  p,
 		options: opts,
 	}
 }
 
 // Generate 生成验证代码
-func (g *SimpleValidateGenerator) Generate() error {
+func (g *ValidateGenerator) Generate() error {
 	// 解析API文件获取带有validate标签的结构体
 	validateStructs, err := g.parseAPIFileForValidateTags()
 	if err != nil {
@@ -82,7 +82,7 @@ func (g *SimpleValidateGenerator) Generate() error {
 }
 
 // generateValidateFile 生成验证文件
-func (g *SimpleValidateGenerator) generateValidateFile(filename string, validateStructs []ValidateStruct) error {
+func (g *ValidateGenerator) generateValidateFile(filename string, validateStructs []ValidateStruct) error {
 	// 准备模板数据
 	data := struct {
 		Package          string
@@ -105,7 +105,7 @@ func (g *SimpleValidateGenerator) generateValidateFile(filename string, validate
 }
 
 // renderTemplate 渲染验证代码模板
-func (g *SimpleValidateGenerator) renderTemplate(data interface{}) (string, error) {
+func (g *ValidateGenerator) renderTemplate(data interface{}) (string, error) {
 	tmpl := `package {{.Package}}
 
 import (
@@ -137,7 +137,7 @@ func (r *{{.Name}}) Validate() error {
 }
 
 // generateTranslatorFile 生成翻译器文件
-func (g *SimpleValidateGenerator) generateTranslatorFile(filename string) error {
+func (g *ValidateGenerator) generateTranslatorFile(filename string) error {
 	content, err := g.renderTranslatorTemplate()
 	if err != nil {
 		return fmt.Errorf("failed to render translator template: %v", err)
@@ -147,7 +147,7 @@ func (g *SimpleValidateGenerator) generateTranslatorFile(filename string) error 
 }
 
 // renderTranslatorTemplate 渲染翻译器模板
-func (g *SimpleValidateGenerator) renderTranslatorTemplate() (string, error) {
+func (g *ValidateGenerator) renderTranslatorTemplate() (string, error) {
 	tmpl := `package types
 
 import (
@@ -249,13 +249,13 @@ func TranslateErrors(err error) []string {
 }
 
 // generateCustomTranslatorTemplate 生成自定义翻译器模板文件
-func (g *SimpleValidateGenerator) generateCustomTranslatorTemplate(filename string) error {
+func (g *ValidateGenerator) generateCustomTranslatorTemplate(filename string) error {
 	content := g.renderCustomTranslatorTemplate()
 	return os.WriteFile(filename, []byte(content), 0644)
 }
 
 // renderCustomTranslatorTemplate 渲染自定义翻译器模板
-func (g *SimpleValidateGenerator) renderCustomTranslatorTemplate() string {
+func (g *ValidateGenerator) renderCustomTranslatorTemplate() string {
 	return `package types
 
 import (
@@ -294,6 +294,6 @@ func fileExists(filename string) bool {
 }
 
 // parseAPIFileForValidateTags 解析API文件获取validate标签
-func (g *SimpleValidateGenerator) parseAPIFileForValidateTags() ([]ValidateStruct, error) {
+func (g *ValidateGenerator) parseAPIFileForValidateTags() ([]ValidateStruct, error) {
 	return parseAPIFileForValidateStructs(g.plugin.ApiFilePath)
 }

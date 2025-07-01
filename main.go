@@ -46,7 +46,7 @@ func main() {
 	}
 
 	// 使用简化的生成器
-	gen := generator.NewSimpleValidateGenerator(p, &generator.Options{
+	gen := generator.NewValidateGenerator(p, &generator.Options{
 		EnableTranslator: enableTranslator,
 	})
 
