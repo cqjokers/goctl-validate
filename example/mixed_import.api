@@ -1,0 +1,32 @@
+syntax = "v1"
+
+info (
+	title:   "混合导入测试API"
+	desc:    "测试单行import和import块混合使用"
+	author:  "goctl-validate"
+	version: "v1.0.0"
+)
+
+// 单行import
+import "types/admin_types.api"
+
+// import块
+import (
+	"types/user_types.api"
+	"types/common_types.api"
+)
+
+service mixed-api {
+	@handler AdminLogin
+	post /api/admin/login (AdminLoginReq) returns (CommonResp)
+
+	@handler AssignRole
+	post /api/admin/assign-role (AssignRoleReq) returns (CommonResp)
+
+	@handler UserRegister
+	post /api/user/register (UserRegisterReq) returns (CommonResp)
+
+	@handler UserQuery
+	get /api/user/query (UserQueryReq) returns (CommonResp)
+}
+

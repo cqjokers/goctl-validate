@@ -1,0 +1,17 @@
+syntax = "v1"
+
+type (
+	// 管理员登录请求
+	AdminLoginReq {
+		Username string `json:"username" validate:"required,min=3,max=20,alphanum"`
+		Password string `json:"password" validate:"required,min=8,max=30"`
+		TwoFA    string `json:"twoFA,omitempty" validate:"omitempty,len=6,numeric"`
+	}
+
+	// 权限分配请求
+	AssignRoleReq {
+		AdminId int64 `json:"adminId" validate:"required,min=1"`
+		RoleId  int64 `json:"roleId" validate:"required,min=1"`
+		Reason  string `json:"reason" validate:"required,min=5,max=200"`
+	}
+)

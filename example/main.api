@@ -1,0 +1,30 @@
+syntax = "v1"
+
+info (
+	title:   "用户服务API"
+	desc:    "用户管理相关接口"
+	author:  "goctl-validate"
+	email:   "example@example.com"
+	version: "v1.0.0"
+)
+
+import "types/user_types.api"
+import "types/common_types.api"
+
+service user-api {
+	@handler UserRegister
+	post /api/user/register (UserRegisterReq) returns (CommonResp)
+
+	@handler UserLogin
+	post /api/user/login (UserLoginReq) returns (CommonResp)
+
+	@handler UserUpdate
+	put /api/user/update (UserUpdateReq) returns (CommonResp)
+
+	@handler UserQuery
+	get /api/user/query (UserQueryReq) returns (CommonResp)
+
+	@handler PasswordChange
+	put /api/user/password (PasswordChangeReq) returns (CommonResp)
+}
+

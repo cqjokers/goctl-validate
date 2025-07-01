@@ -1,0 +1,31 @@
+syntax = "v1"
+
+type (
+	// 用户注册请求
+	UserRegisterReq {
+		Username string `json:"username" validate:"required,min=3,max=20,alphanum"`
+		Password string `json:"password" validate:"required,min=6,max=20"`
+		Email    string `json:"email" validate:"required,email"`
+		Phone    string `json:"phone" validate:"required,len=11,numeric"`
+		Nickname string `json:"nickname" validate:"required,min=1,max=30"`
+		Age      int    `json:"age" validate:"required,min=1,max=150"`
+		Gender   int    `json:"gender" validate:"required,oneof=0 1 2"`
+	}
+
+	// 用户登录请求
+	UserLoginReq {
+		Username string `json:"username" validate:"required,min=3,max=20"`
+		Password string `json:"password" validate:"required,min=6,max=20"`
+		Captcha  string `json:"captcha" validate:"required,len=4,numeric"`
+	}
+
+	// 用户信息更新请求
+	UserUpdateReq {
+		UserId      int64   `json:"userId" validate:"required,min=1"`
+		Nickname    *string `json:"nickname,omitempty" validate:"omitempty,min=1,max=30"`
+		Email       *string `json:"email,omitempty" validate:"omitempty,email"`
+		Phone       *string `json:"phone,omitempty" validate:"omitempty,len=11,numeric"`
+		Avatar      *string `json:"avatar,omitempty" validate:"omitempty,url"`
+		Description *string `json:"description,omitempty" validate:"omitempty,max=500"`
+	}
+)

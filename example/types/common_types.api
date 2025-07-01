@@ -1,0 +1,27 @@
+syntax = "v1"
+
+type (
+	// 用户查询请求
+	UserQueryReq {
+		Page     int    `json:"page" validate:"required,min=1"`
+		PageSize int    `json:"pageSize" validate:"required,min=1,max=100"`
+		Keyword  string `json:"keyword,omitempty" validate:"omitempty,min=1,max=50"`
+		Status   int    `json:"status" validate:"required,oneof=0 1"`
+		UserType int    `json:"userType" validate:"required,oneof=1 2 3"`
+	}
+
+	// 密码修改请求
+	PasswordChangeReq {
+		UserId          int64  `json:"userId" validate:"required,min=1"`
+		OldPassword     string `json:"oldPassword" validate:"required,min=6,max=20"`
+		NewPassword     string `json:"newPassword" validate:"required,min=6,max=20"`
+		ConfirmPassword string `json:"confirmPassword" validate:"required,min=6,max=20"`
+	}
+
+	// 通用响应
+	CommonResp {
+		Code    int         `json:"code"`
+		Message string      `json:"message"`
+		Data    interface{} `json:"data,omitempty"`
+	}
+)
